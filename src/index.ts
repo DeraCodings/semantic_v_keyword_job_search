@@ -1,187 +1,270 @@
-import { Command } from "commander";
-import { isEnterpriseBlocked } from "./config/enterprise-blocklist.js";
-import { analyzeBatch } from "./services/analyser.js";
-import { dispatchLeadsToEveAgent } from "./services/eveDispatcher.js";
+import cors from "cors";
+import express, { type Request, type Response } from "express";
+import {
+  getJobCount,
+  insertJob,
+  isJobKnown,
+  searchJobsKeyword,
+  searchJobsVector,
+} from "./db/repository.js";
+import { generateEmbedding } from "./services/embedder.js";
+import { extractJobBatch } from "./services/job-extractor.js";
 import { scrapeBatch, scrapePage } from "./services/scraper.js";
 import {
+  DATABASE_SEARCH_PRESETS,
   discoverTargets,
   parseUrlTarget,
-  TARGET_SEARCH_PRESETS,
 } from "./services/search.js";
-import {
-  exportToCSV,
-  exportToJSON,
-  getHistoricalDomains,
-} from "./storage/exporter.js";
-import { isLeadOrCompanyKnown } from "./storage/registry.js";
-import { Lead, ScrapedPage, SearchResult } from "./types/index.js";
+import { ScrapedPage, SearchResult } from "./types/index.js";
+import { query } from "./db/index.js";
 
-const program = new Command();
+const app = express();
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
-program
-  .name("devtool-scraper")
-  .description(
-    "Intelligent CLI lead discovery pipeline for technical content writers and DevRel consultants",
-  )
-  .version("2.0.0");
+app.use(cors());
+app.use(express.json());
 
-const runScraper = async (options: any) => {
-  console.log("\n🚀 Starting DevTool Lead Scraper CLI v2.0...\n");
-
-  const limit = parseInt(options.limit || "5", 10);
-  const searchTargets: SearchResult[] = [];
-  const directPages: ScrapedPage[] = [];
-
-  // Load existing domains & slugs from past exports & central registry
-  const knownDomains = await getHistoricalDomains();
-
-  // Step 1: Identify targets
-  if (options.preset) {
-    const presetKey =
-      options.preset.toUpperCase() as keyof typeof TARGET_SEARCH_PRESETS;
-    const queries = TARGET_SEARCH_PRESETS[presetKey];
-
-    if (!queries) {
-      console.error(
-        `❌ Invalid preset "${options.preset}". Valid options:\n` +
-          Object.keys(TARGET_SEARCH_PRESETS)
-            .map((k) => `   • ${k}`)
-            .join("\n"),
-      );
-      process.exit(1);
-    }
-
-    console.log(`🔍 Running preset search strategy: ${presetKey}`);
-    const discovered = await discoverTargets([...queries], limit);
-    searchTargets.push(...discovered);
-  } else if (options.query) {
-    console.log(`🔍 Running custom search query: "${options.query}"`);
-    const discovered = await discoverTargets([options.query], limit);
-    searchTargets.push(...discovered);
-  } else if (options.urls && options.urls.length > 0) {
-    console.log(`🌐 Processing ${options.urls.length} direct target URLs...`);
-    for (const url of options.urls) {
-      const { domain, companySlug } = parseUrlTarget(url);
-
-      if (isEnterpriseBlocked(companySlug) || isEnterpriseBlocked(domain)) {
-        console.log(
-          `🚫 Skipping direct URL ${url}: Enterprise blocklist matched (${companySlug || domain}).`,
-        );
-        continue;
-      }
-
-      const knownCheck = await isLeadOrCompanyKnown({
-        companySlug,
-        domain,
-        jobUrl: url,
-      });
-
-      if (
-        knownDomains.has(companySlug.toLowerCase()) ||
-        knownDomains.has(domain.toLowerCase()) ||
-        knownCheck.isKnown
-      ) {
-        console.log(
-          `⏩ Skipping direct URL ${url}: "${companySlug || domain}" already in history.`,
-        );
-        continue;
-      }
-
-      const scraped = await scrapePage(url, domain, companySlug);
-      if (scraped) directPages.push(scraped);
-    }
-  } else {
-    console.error(
-      "❌ Please specify a search target using --preset, --query, or --urls.",
-    );
-    process.exit(1);
-  }
-
-  // Filter out targets already known in registry or past exports
-  const newTargets: SearchResult[] = [];
-  for (const target of searchTargets) {
-    const isKnownHistorical =
-      knownDomains.has(target.companySlug.toLowerCase()) ||
-      knownDomains.has(target.domain.toLowerCase());
-
-    const knownCheck = await isLeadOrCompanyKnown({
-      companySlug: target.companySlug,
-      jobUrl: target.link,
-      domain: target.domain,
+// Check system health, database status, and total stored jobs count
+app.get("/api/health", async (_, res) => {
+  try {
+    const jobCount = await getJobCount();
+    res.json({
+      status: "online",
+      service: "Percona Job Search API",
+      database: "PostgreSQL 18 + pgvector",
+      totalStoredJobs: jobCount,
     });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-    if (isKnownHistorical || knownCheck.isKnown) {
-      console.log(
-        `⏩ Skipping target "${target.companySlug || target.domain}": ${knownCheck.reason || "Present in past CSV exports."}`,
-      );
+// Discover, scrape, extract, and ingest new job postings into PostgreSQL
+app.post("/api/jobs/ingest", async (req: Request, res) => {
+  try {
+    const { preset, query, urls, limit = 5 } = req.body;
+    const searchTargets: SearchResult[] = [];
+    const directPages: ScrapedPage[] = [];
+
+    console.log("Ingest params:", { preset, query, limit, urls });
+
+    // Step 1: Discover targets based on preset, query, or direct URLs
+    if (preset) {
+      const presetKey =
+        preset.toUpperCase() as keyof typeof DATABASE_SEARCH_PRESETS;
+      const queries = DATABASE_SEARCH_PRESETS[presetKey];
+      if (!queries) {
+        return res.status(400).json({
+          error: `Invalid preset '${preset}'. Valid options: ${Object.keys(DATABASE_SEARCH_PRESETS).join(", ")}`,
+        });
+      }
+      const discovered = await discoverTargets([...queries], Number(limit));
+      searchTargets.push(...discovered.slice(0, Number(limit)));
+    } else if (query) {
+      const discovered = await discoverTargets([query], Number(limit));
+      searchTargets.push(...discovered);
+    } else if (urls && Array.isArray(urls)) {
+      for (const url of urls) {
+        const { domain, companySlug } = parseUrlTarget(url);
+        const scraped = await scrapePage(url, domain, companySlug);
+        if (scraped) directPages.push(scraped);
+      }
     } else {
-      newTargets.push(target);
+      const queries = DATABASE_SEARCH_PRESETS.POSTGRESQL_JOBS;
+      const discovered = await discoverTargets([...queries], Number(limit));
+      searchTargets.push(...discovered);
     }
+
+    // Step 2: Skip URLs already existing in PostgreSQL
+    const newTargets: SearchResult[] = [];
+    for (const target of searchTargets) {
+      const exists = await isJobKnown(target.link);
+      if (!exists) newTargets.push(target);
+    }
+
+    // Step 3: Scrape web pages via Firecrawl or HTTP fallback
+    const scrapedPages: ScrapedPage[] = [...directPages];
+    if (newTargets.length > 0) {
+      const freshlyScraped = await scrapeBatch(newTargets, 2, 2000);
+      scrapedPages.push(...freshlyScraped);
+    }
+
+    // Step 4: Extract structured fields and generate vector embeddings
+    const jobPostings = await extractJobBatch(scrapedPages);
+
+    // Step 5: Save job records into PostgreSQL database
+    let insertedCount = 0;
+    for (const job of jobPostings) {
+      const inserted = await insertJob(job);
+      if (inserted) insertedCount++;
+    }
+
+    const totalJobs = await getJobCount();
+    res.json({
+      success: true,
+      scrapedPagesCount: scrapedPages.length,
+      insertedCount,
+      totalStoredJobs: totalJobs,
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
+});
 
-  console.log(
-    `🎯 ${newTargets.length} new qualified targets remaining after historical deduplication.`,
-  );
+// Perform full-text keyword search using PostgreSQL tsvector
+app.get("/api/search/keyword", async (req: Request, res: Response) => {
+  try {
+    const q = req.query.q as string;
+    const limit = Number(req.query.limit || 10);
 
-  // Step 2: Scrape targets
-  let scrapedPages: ScrapedPage[] = [...directPages];
-  if (newTargets.length > 0) {
-    const freshlyScraped = await scrapeBatch(newTargets, 2, 2000);
-    scrapedPages.push(...freshlyScraped);
-  }
+    if (!q) {
+      return res.status(400).json({ error: "Query parameter 'q' is required" });
+    }
 
-  if (scrapedPages.length === 0) {
-    console.log("⚠️ No new readable web pages to process. Exiting.");
-    return;
-  }
-
-  // Step 3: Analyze and qualify via OpenRouter LLM
-  const qualifiedLeads: Lead[] = await analyzeBatch(scrapedPages);
-
-  if (qualifiedLeads.length === 0) {
-    console.log(
-      "ℹ️ No new leads met the high-intent qualification threshold during this run.",
+    const startTime = performance.now();
+    const results = await searchJobsKeyword(q, limit);
+    const executionTimeMs = parseFloat(
+      (performance.now() - startTime).toFixed(2),
     );
-    return;
-  }
 
-  // Step 4: Export qualified leads to local files (with automatic append/merge)
-  const format = (options.format || "both").toLowerCase();
-  if (format === "json" || format === "both") {
-    await exportToJSON(qualifiedLeads);
+    res.json({
+      engine: "PostgreSQL tsvector",
+      query: q,
+      executionTimeMs,
+      count: results.length,
+      results,
+      message:
+        results.length < 1
+          ? `No job results for ${q} found`
+          : `Found ${results.length} jobs for ${q}`,
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
-  if (format === "csv" || format === "both") {
-    await exportToCSV(qualifiedLeads);
-  }
+});
 
-  // Step 5: Dispatch qualified leads to Eve Agent (handles research + unified Telegram notification)
-  if (qualifiedLeads.length > 0) {
-    console.log(
-      `📡 Dispatching ${qualifiedLeads.length} qualified lead(s) to Eve Agent for research & alerting...`,
+// Perform semantic vector search using pgvector and jina embeddings
+app.get("/api/search/vector", async (req: Request, res: Response) => {
+  try {
+    const q = req.query.q as string;
+    const limit = Number(req.query.limit || 10);
+
+    if (!q) {
+      return res.status(400).json({ error: "Query parameter 'q' is required" });
+    }
+
+    const startTime = performance.now();
+    const queryEmbedding = await generateEmbedding(q);
+    if (!queryEmbedding || queryEmbedding.length === 0) {
+      return res
+        .status(500)
+        .json({ error: "Failed to generate query embedding" });
+    }
+    const results = await searchJobsVector(queryEmbedding, limit);
+    const executionTimeMs = parseFloat(
+      (performance.now() - startTime).toFixed(2),
     );
-    await dispatchLeadsToEveAgent(qualifiedLeads);
+
+    res.json({
+      engine: "PostgreSQL pgvector (Jina Embedding API)",
+      query: q,
+      executionTimeMs,
+      count: results.length,
+      results,
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Compare keyword search vs semantic vector search side-by-side
+app.get("/api/benchmark", async (req: Request, res: Response) => {
+  try {
+    const q = req.query.q as string;
+    const limit = Number(req.query.limit || 5);
+
+    if (!q) {
+      return res.status(400).json({ error: "Query parameter 'q' is required" });
+    }
+
+    // 1. Keyword Search
+    const kwStart = performance.now();
+    const kwResults = await searchJobsKeyword(q, limit);
+    const kwTimeMs = parseFloat((performance.now() - kwStart).toFixed(2));
+
+    // 2. Vector Search
+    const vecStart = performance.now();
+    const queryEmbedding = await generateEmbedding(q);
+    if (!queryEmbedding || queryEmbedding.length === 0) {
+      console.error("Failed to generate query embedding for benchmark");
+      return res
+        .status(500)
+        .json({ error: "Failed to generate query embedding" });
+    }
+    const vecResults = await searchJobsVector(queryEmbedding, limit);
+    const vecTimeMs = parseFloat((performance.now() - vecStart).toFixed(2));
+
+    res.json({
+      benchmark: "Keyword Search (tsvector) vs Semantic Search (pgvector)",
+      query: q,
+      keywordSearch: {
+        engine: "tsvector",
+        executionTimeMs: kwTimeMs,
+        count: kwResults.length,
+        results: kwResults,
+      },
+      vectorSearch: {
+        engine: "pgvector (Jina Embedding API)",
+        executionTimeMs: vecTimeMs,
+        count: vecResults.length,
+        results: vecResults,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+// Debug endpoint to compute cosine distances for sample queries
+app.get("/api/debug/distances", async (_, res: Response) => {
+  const queries = [
+    "postgres",
+    "database",
+    "developer",
+    "backend engineer",
+    "writer",
+    "ui_developer",
+    "nurse",
+    "chef",
+  ];
+
+  const output: Record<
+    string,
+    { id: string; title: string; distance: number }[]
+  > = {};
+
+  for (const q of queries) {
+    const embedding = await generateEmbedding(q);
+    const result = await query(
+      `SELECT id, title, (embedding <=> $1::vector) AS distance
+       FROM jobs
+       WHERE embedding IS NOT NULL
+       ORDER BY distance ASC`,
+      [JSON.stringify(embedding)],
+    );
+    output[q] = result.rows.map((r) => ({
+      id: r.id,
+      title: r.title,
+      distance: parseFloat(r.distance),
+    }));
   }
 
+  res.json(output);
+});
+
+app.listen(PORT, () => {
   console.log(
-    `\n🎉 Pipeline completed successfully! Found ${qualifiedLeads.length} new qualified leads.\n`,
+    `\n🚀 Percona Job Search Express API running on http://localhost:${PORT}\n`,
   );
-};
-
-program
-  .command("scrape", { isDefault: true })
-  .description("Scrape and qualify high-intent DevTool prospects")
-  .option(
-    "-p, --preset <preset>",
-    "Search preset: ATS_HIRING, DEVREL_HIRING, WRITERS_PROGRAMS, STARTUP_BOARDS, FREELANCE_REMOTE_BOARDS, SOCIAL_HIRING, AI_DEVTOOLS, BAAS_COMPETITORS, AUTH_COMPETITORS, CMS_COMPETITORS",
-  )
-  .option("-q, --query <query>", "Custom search query string")
-  .option(
-    "-u, --urls <urls...>",
-    "Direct list of target URLs to scrape directly",
-  )
-  .option("-l, --limit <number>", "Max search results per query", "5")
-  .option("-f, --format <format>", "Export format: json, csv, or both", "both")
-  .action(runScraper);
-
-program.parse(process.argv);
-
+});

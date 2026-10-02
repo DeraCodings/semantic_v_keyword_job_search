@@ -1,0 +1,734 @@
+{
+  "postgres": [
+    { "id": "24", "title": "Data Engineer", "distance": 0.394348305295357 },
+    {
+      "id": "1",
+      "title": "Database Engineer",
+      "distance": 0.45708279183753675
+    },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.47154752825342183
+    },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.4721700110384798
+    },
+    { "id": "22", "title": "Data Engineer", "distance": 0.4845528295369643 },
+    { "id": "20", "title": "Data Engineer", "distance": 0.48875440690653105 },
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.5093279784517275
+    },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.5113404538827979
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.5117888000074367
+    },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.5134552862210466
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.5186480129168011 },
+    { "id": "18", "title": "Technical Role", "distance": 0.5233859561864728 },
+    { "id": "19", "title": "SRE", "distance": 0.5264723159811588 },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.5355720083585978
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.5378018640161671
+    },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.5491330489257884
+    },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.5620925295976555
+    },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.5694194224995843
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.5745827428872209
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.5764862127159158
+    },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.5803206783819803
+    },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.5941319046655863
+    },
+    { "id": "16", "title": "Technical Role", "distance": 0.6195286852542699 },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.6248826570773915
+    }
+  ],
+  "database": [
+    {
+      "id": "1",
+      "title": "Database Engineer",
+      "distance": 0.25581735372543335
+    },
+    { "id": "24", "title": "Data Engineer", "distance": 0.2755553722381592 },
+    { "id": "22", "title": "Data Engineer", "distance": 0.2945672063400506 },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.30449704501050323
+    },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.309292197227478
+    },
+    { "id": "20", "title": "Data Engineer", "distance": 0.3492418915485197 },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.39283934874299964
+    },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.4281129837036133
+    },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.43739560619618756
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.4383377171553532 },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.4415040085906933
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.44300625067911936
+    },
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.45555589960682064
+    },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.46004611253738403
+    },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.4648928919370696
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.4658340811729431
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.4791525912789937
+    },
+    { "id": "19", "title": "SRE", "distance": 0.47929346561431885 },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.48095858097076416
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.483800932282237
+    },
+    { "id": "18", "title": "Technical Role", "distance": 0.48562714543180696 },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.4858511686325073
+    },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.5344245135784149
+    },
+    { "id": "16", "title": "Technical Role", "distance": 0.5663489024223174 }
+  ],
+  "developer": [
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.3190734792307913
+    },
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.3326814969574933
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.34158905248772475
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.34332956751232535 },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.35284179100242896
+    },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.3548698809820473
+    },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.36855264084903705
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.37646587561172373
+    },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.3917424211809133
+    },
+    {
+      "id": "1",
+      "title": "Database Engineer",
+      "distance": 0.40329632739446486
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.4040383810951256
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.4203222739504402
+    },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.42550877180643143
+    },
+    { "id": "24", "title": "Data Engineer", "distance": 0.42754140928140727 },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.43176833201835463
+    },
+    { "id": "22", "title": "Data Engineer", "distance": 0.441792981571166 },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.44407120680384493
+    },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.44578186000693576
+    },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.4583902955055198
+    },
+    { "id": "18", "title": "Technical Role", "distance": 0.4600651907843124 },
+    { "id": "19", "title": "SRE", "distance": 0.46697405177509377 },
+    { "id": "20", "title": "Data Engineer", "distance": 0.4710369740680487 },
+    { "id": "16", "title": "Technical Role", "distance": 0.4741480694744453 },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.4746661812464975
+    }
+  ],
+  "backend engineer": [
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.23917223448587865
+    },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.24436464177475148
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.263461492554498 },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.26808061396835114
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.2692004006624461
+    },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.2754179023330775
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.2929257961235675
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.2931959839702821
+    },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.29400561136024006
+    },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.3009303241136303
+    },
+    { "id": "1", "title": "Database Engineer", "distance": 0.325507143900011 },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.3259392775875112
+    },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.3367142479632568
+    },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.3390376370858439
+    },
+    { "id": "24", "title": "Data Engineer", "distance": 0.3422335190246555 },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.35092387649190027
+    },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.36393569004343984
+    },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.36502768501556604
+    },
+    { "id": "22", "title": "Data Engineer", "distance": 0.3680033903123969 },
+    { "id": "20", "title": "Data Engineer", "distance": 0.3805507010057335 },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.4359103532949403
+    },
+    { "id": "19", "title": "SRE", "distance": 0.4600498515382363 },
+    { "id": "18", "title": "Technical Role", "distance": 0.5008945613832883 },
+    { "id": "16", "title": "Technical Role", "distance": 0.5598935580348718 }
+  ],
+  "writer": [
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.4467923476336103
+    },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.45547640323638916
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.4605760895862516 },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.4612748622894287
+    },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.4636330924252803
+    },
+    { "id": "18", "title": "Technical Role", "distance": 0.4656333049754309 },
+    { "id": "19", "title": "SRE", "distance": 0.4737628698348999 },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.48339951038360596
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.48678127009980166
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.4909842014312744
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.4940299693328152
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.5012497753277352
+    },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.5063373144663972
+    },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.5102474379244486
+    },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.512378066778183
+    },
+    { "id": "24", "title": "Data Engineer", "distance": 0.5139382481575012 },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.5244862749866402
+    },
+    { "id": "16", "title": "Technical Role", "distance": 0.5293139184339111 },
+    { "id": "1", "title": "Database Engineer", "distance": 0.5319320261478424 },
+    { "id": "22", "title": "Data Engineer", "distance": 0.5338830808962307 },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.5359960496425629
+    },
+    { "id": "20", "title": "Data Engineer", "distance": 0.5377075947697396 },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.5664961934089661
+    },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.5966248156651957
+    }
+  ],
+  "ui_developer": [
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.28593248976484
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.29798615610846946 },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.29862686412013695
+    },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.3040931458362117
+    },
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.3085092924377878
+    },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.3106889765222698
+    },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.3311893150355065
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.33909213491449797
+    },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.3432961684531852
+    },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.35587938357836935
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.3659387768616468
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.3741346151668248
+    },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.38758726267966037
+    },
+    { "id": "1", "title": "Database Engineer", "distance": 0.3888961805228929 },
+    { "id": "24", "title": "Data Engineer", "distance": 0.3968430284448785 },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.4044264072863528
+    },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.4070831051965784
+    },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.4080760831787442
+    },
+    { "id": "22", "title": "Data Engineer", "distance": 0.4095109037002047 },
+    { "id": "19", "title": "SRE", "distance": 0.4369161800245984 },
+    { "id": "20", "title": "Data Engineer", "distance": 0.437868099593859 },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.44125566936927885
+    },
+    { "id": "18", "title": "Technical Role", "distance": 0.4462290800400224 },
+    { "id": "16", "title": "Technical Role", "distance": 0.4593948222649521 }
+  ],
+  "nurse": [
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.48993325353464445
+    },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.5165474395099354
+    },
+    { "id": "19", "title": "SRE", "distance": 0.5273548050311316 },
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.534665777246182
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.5442750129535778
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.544756336666453
+    },
+    { "id": "1", "title": "Database Engineer", "distance": 0.5504542261091327 },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.5520720748858399
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.5610941575653365 },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.564538828785559
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.5690597809481882
+    },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.5772277666790617
+    },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.5784800303888296
+    },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.5796103179454773
+    },
+    { "id": "18", "title": "Technical Role", "distance": 0.582493235767694 },
+    { "id": "24", "title": "Data Engineer", "distance": 0.588938677970249 },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.5898377788260247
+    },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.5922859444106909
+    },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.5971213819312218
+    },
+    { "id": "22", "title": "Data Engineer", "distance": 0.5985227346860531 },
+    { "id": "20", "title": "Data Engineer", "distance": 0.6055451505726397 },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.6119001143038199
+    },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.6194860565968712
+    },
+    { "id": "16", "title": "Technical Role", "distance": 0.6532104635458349 }
+  ],
+  "chef": [
+    { "id": "18", "title": "Technical Role", "distance": 0.4593233192370334 },
+    {
+      "id": "12",
+      "title": "Full Stack Engineer",
+      "distance": 0.46404747557781545
+    },
+    { "id": "19", "title": "SRE", "distance": 0.46687549352645874 },
+    {
+      "id": "4",
+      "title": "Frontend Engineer (SF)",
+      "distance": 0.4801804137122375
+    },
+    {
+      "id": "3",
+      "title": "Senior Frontend Engineer",
+      "distance": 0.4817169021536757
+    },
+    {
+      "id": "8",
+      "title": "Senior Node.js Backend Engineer",
+      "distance": 0.4819009612857713
+    },
+    {
+      "id": "5",
+      "title": "Frontend Engineer 3",
+      "distance": 0.4838770031929016
+    },
+    {
+      "id": "6",
+      "title": "Lead Frontend Engineer (m/f/d)",
+      "distance": 0.48575258255004883
+    },
+    {
+      "id": "10",
+      "title": "Senior Backend Engineer, Client Portal",
+      "distance": 0.4883638925335462
+    },
+    {
+      "id": "7",
+      "title": "FrontEnd Engineer, w/strong React",
+      "distance": 0.49901734289578603
+    },
+    {
+      "id": "13",
+      "title": "Web3 / Full-stack Software Engineer",
+      "distance": 0.49914872646331787
+    },
+    { "id": "9", "title": "Backend Engineer", "distance": 0.5023944078448759 },
+    {
+      "id": "11",
+      "title": "Full stack Engineer",
+      "distance": 0.5119162485699322
+    },
+    {
+      "id": "17",
+      "title": "Site Reliability Engineer",
+      "distance": 0.5229487419128418
+    },
+    {
+      "id": "21",
+      "title": "Senior Data Engineer",
+      "distance": 0.5233846306800842
+    },
+    { "id": "1", "title": "Database Engineer", "distance": 0.5256583094596863 },
+    { "id": "24", "title": "Data Engineer", "distance": 0.5258814096450806 },
+    {
+      "id": "2",
+      "title": "Senior Database Engineer",
+      "distance": 0.5448852750727362
+    },
+    { "id": "22", "title": "Data Engineer", "distance": 0.5483339890341157 },
+    {
+      "id": "23",
+      "title": "Data Engineer, Foundations",
+      "distance": 0.5522661209106445
+    },
+    {
+      "id": "14",
+      "title": "Site Reliability Engineering (SRE)",
+      "distance": 0.5541674825052898
+    },
+    { "id": "20", "title": "Data Engineer", "distance": 0.5587483311445508 },
+    {
+      "id": "15",
+      "title": "Site reliability engineering",
+      "distance": 0.5702885985374451
+    },
+    { "id": "16", "title": "Technical Role", "distance": 0.5895469976011488 }
+  ]
+}

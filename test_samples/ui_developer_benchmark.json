@@ -1,0 +1,147 @@
+{
+  "benchmark": "Keyword Search (tsvector) vs Semantic Search (pgvector)",
+  "query": "ui_developer",
+  "keywordSearch": {
+    "engine": "tsvector",
+    "executionTimeMs": 69.73,
+    "count": 0,
+    "results": []
+  },
+  "vectorSearch": {
+    "engine": "pgvector (Jina Embedding API)",
+    "executionTimeMs": 967.33,
+    "count": 5,
+    "results": [
+      {
+        "id": "3",
+        "title": "Senior Frontend Engineer",
+        "company": "Numos AI, inc.",
+        "description": "- [![Numos AI, inc.](https://app.ashbyhq.com/api/images/org-theme-wordmark/c6cf97cd-19a8-4d0a-9437-d677f7f75c2d/7e5c1104-4602-4529-ada0-a15883280d3e/2e4ec06f-aa17-40e3-80a4-e85bfae4a8cd.png)](https://www.numos.ai/) - [Back to Numos AI, inc.’s Job Listings](https://jobs.ashbyhq.com/numosai) # Senior Frontend Engineer ## Location San Francisco Bay Area ## Employment Type Full time ## Location Type On-site ## Department Engineering We’re looking for a senior frontend engineer to design and build the interfaces for AI teammates in finance. You’ll create intuitive, high-signal experiences that make complex systems understandable, controllable, and trustworthy in real workflows. **What you’ll do** - Build responsive, high-performance interfaces for AI-driven workflows - Translate complex data and system behavior into clear, usable experiences - Design interactions that balance automation with human control and review - Collaborate closely with backend and AI teams to ship end-to-end features - Own frontend architecture and contribute to design systems and standards **What we’re looking for** - 2+ years of frontend development experience - Strong expertise in React and TypeScript - Experience designing or building interfaces for AI/ML systems - Ability to work with complex data and create effective visualizations - Familiarity with modern web technologies and frontend best practices **Why Numos** You’ll be shaping how people interact with AI that actually does the work. The challenge is making powerful systems feel simple, without losing depth or control. [Apply for this Job](https://jobs.ashbyhq.com/numosai/ade7b15a-68c7-46ad-ad2a-9a941f26adb9/application)",
+        "location": "San Francisco Bay Area (On-site)",
+        "url": "https://jobs.ashbyhq.com/numosai/ade7b15a-68c7-46ad-ad2a-9a941f26adb9",
+        "skills": [
+          "Frontend Development",
+          "React",
+          "TypeScript",
+          "AI/ML Interfaces",
+          "Data Visualization",
+          "Frontend Architecture",
+          "Design Systems",
+          "Modern Web Technologies",
+          "Frontend Best Practices"
+        ],
+        "distance": 0.28593248976484
+      },
+      {
+        "id": "9",
+        "title": "Backend Engineer",
+        "company": "Viktor",
+        "description": "- [![Viktor](https://app.ashbyhq.com/api/images/org-theme-wordmark/ab9df39f-8bf3-4da7-8915-a21198f12350/3c44347f-7b72-4b0b-beb0-397a44f117b8/11709fd2-dcd7-4bbc-bad4-0330ea5d0f6b.png)](https://viktor.com/) - [Back to Viktor’s Job Listings](https://jobs.ashbyhq.com/viktor) # Backend Engineer ## Location Warsaw; Munich ## Employment Type Full time ## Location Type On-site ## Department Product & Engineering ## **The Short Version** You make everything the agent runs on solid: the integrations it reaches through, the gateway that turns them into functions it can call, the sandboxes it runs in, and the data underneath. You've built and operated real backend systems in production and have scars from how they break. You may never have shipped an LLM feature, and that's fine. If you haven't run systems in production, this isn't the role. ## **The Hard Part** Viktor reaches into 3,200+ integrations for 56,000+ workspaces, 5M+ tool calls a day, on real customer data. Every integration that quietly misbehaves is a task the agent gets wrong. We're building a harness ready for AGI-level models: an agent that explores what a company runs on and automates it on its own. That bet lives or dies on the backend underneath. The gateway, sandboxes, and data every task runs through have to be fast, solid, and never the reason the agent got it wrong. ## **What You'll Actually Do** - Own integration quality end to end: catch issues before customers do, fix them, and make sure they can't recur. - Build the tool gateway: turn every connected API and MCP into a clean Python SDK the agent composes, with routing, auth, rate limits, and reliability. - Run the sandboxes: a persistent Linux environment per workspace, isolated, secured, autoscaled, and cheap per task. - Own the data layer: state and persistence across 56,000+ multi-tenant workspaces, durable and fast. - Whatever needs building. Small team, large surface. ## **Who You Are** - You design distributed systems for scale and reliability, and have operated them in production through the breakage. - You know sandboxing and OS-level isolation cold: containers, Linux internals, running untrusted code safely. - You've wrangled real integration plumbing: OAuth, webhooks, rate limits, and third-party APIs that lie. - You think in multi-tenancy, durability, and cost per request, and design for failure by default. - Security and blast radius are instincts you bring to every design, especially when the thing executes model-written code. - You build with AI by default, because that's how the team moves. - You may never have shipped an LLM feature, and that's fine. This is a systems role. ## **Why This Role Is Different** - No layers. You work directly with both founders, and decisions get made in the room, not in a Linear ticket. - The backend is the ceiling. Every integration you make reliable and every sandbox you make cheaper raises what the whole agent can do. - You're building the backend of a frontier harness: the layer that decides how much of the model's intelligence turns into real work. ## **Even Better If** - You've worked on infrastructure, platform, or developer-tools teams where reliability was the product. - You've built sandboxing, code-execution, or multi-tenant systems before. - You're at home in agentic engineering workflows, spec to production. - You've contributed to the open-source infrastructure the world runs on. - You've founded something or been an early-stage builder. ## **Tech** Python. No agent framework and no container orchestration layer: Python services, persistent Linux sandboxes per workspace, Modal for infrastructure. You'll live in OAuth and webhooks, the tool gateway, and multi-tenant data. You don't need all of it coming in, but you need to learn fast. ## **How we work** Small team, high trust, low process. Decisions are made by owners, not committees. You will ship your first week. You will talk to users your first day. We don't do alignment meetings or stakeholder syncs. We build things, see if they work, and iterate. ## **Why Viktor** We're one of the fastest-growing companies in the world. The product works. The market is pulling. This is a rare window: everyone here owns something real. Not a task. A surface of the company that customers depend on. That doesn't last forever. Right now, it's still true. ## **Compensation** Top-of-the-market salary and the kind of ownership that only exists at this stage. The best work happens when you're in the room. This role is Munich or Warsaw. [Apply for this Job](https://jobs.ashbyhq.com/viktor/143f3943-33ab-4614-87b8-8435517d8830/application)",
+        "location": "Warsaw or Munich (on-site)",
+        "url": "https://jobs.ashbyhq.com/viktor/143f3943-33ab-4614-87b8-8435517d8830",
+        "skills": [
+          "Python",
+          "Python SDK development",
+          "API gateways",
+          "MCP",
+          "API routing",
+          "authentication",
+          "OAuth",
+          "webhooks",
+          "rate limiting",
+          "distributed systems",
+          "Linux",
+          "containers",
+          "OS-level isolation",
+          "sandboxing",
+          "untrusted code execution",
+          "multi-tenant systems",
+          "data persistence",
+          "Modal"
+        ],
+        "distance": 0.29798615610846946
+      },
+      {
+        "id": "13",
+        "title": "Web3 / Full-stack Software Engineer",
+        "company": "stakefish",
+        "description": "![stakefish logo](https://workablehr.s3.amazonaws.com/uploads/account/logo/437155/logo) # **Web3 / Full-stack Software Engineer** ## at [stakefish](https://jobs.workable.com/company/mSWaJKBXWW1KLWRgNZ1jh1/jobs-at-stakefish) **Remote**Dubai, Dubai, United Arab EmiratesEngineeringFull-time Posted 9 months ago Share job Apply now ### **Description** As our Web3 / Full-stack Software Engineer, you will be designing, developing, and deploying software solutions that power various products at stake.fish. In this role, you will work closely with a group of talented engineers, product managers, and UX designers to build the next generation of staking products. Your work will help with securing a wide range of blockchain networks and contribute to the bedrock of decentralization. **What will you do?** - Build new products & features that meet critical product and business needs. - Build pixel-perfect and responsive web applications with web3.js, ethers.js, React.js and TypeScript. - Continuously prototype and improve UIs iteratively with the product and design team. - Write server code in Python that is extensible, well-tested, and secure. - Leverage automated testing, CI/CD, container orchestration, and other modern development techniques. - Collaborate with the team to review PR, and make improvements to the codebase. **What are the requirements?** - You have deep front-end development knowledge and knowledge of React . - You have experience with web3: blockchain, and smart contracts. - You are proficient in using web3.js and ethers.js libraries. - You are knowledgeable with Ethereum and EVM concepts. - You have a good understanding of data structures and algorithms. - You have a track record of designing, creating, and maintaining production services. - Familiar with Linux, cloud services (such as AWS), and Docker. - Able to work independently and set up an efficient development environment. - You have basic skills on Unix command line & shell scripting. **What will be great to have?** - You can review EVM-based smart contracts and audit for security issues. - You are contributing to the open-source community. - You have working experience in a startup environment. **Why are we awesome you ask?** We are truly at the forefront of the crypto ecosystem as maintainers of the infrastructure layer of blockchain networks! We practice the crypto team mentality by assembling a truly global and diverse team. We collectively represent more than 12 different countries and are united in a single mission: building out the future of decentralization. Crypto is here to stay, having introduced novel ideas such as DeFi, NFTs and DAOs. At the core of all this are teams like us working relentlessly to build the necessary tools and applications that help run and secure blockchains. ### Here are some other reasons you should join us: - We have employees from over 10 countries across the globe, and you will be able to meet interesting people from different backgrounds and cultures. Distributed and remote work is baked into our culture. - We are one of the top staking service providers with over $3B of assets staked across our validators. We actively explore and develop new products related to staking. You will work on high-impact engineering projects building exciting new products in a startup environment. - We have a capable and passionate team. You will find teammates who are power DeFi users, intense NFT collectors, Bitcoin & Ethereum knowledge nerds, etc. You can learn and debate everything on crypto with our teammates. - We are not backed by VC funding, and we are already profitable. Our financial independence means that we can make decisions independent of VCs, and we prioritize our ideals of decentralization, user sovereignty, and user privacy over simply making a profit. It also means that, unlike most other startups, stakefish can provide you with a stable low-risk employment opportunity without fundraising concerns. [More about stakefish](https://jobs.workable.com/company/mSWaJKBXWW1KLWRgNZ1jh1/jobs-at-stakefish) Apply now ![stakefish logo](https://workablehr.s3.amazonaws.com/uploads/account/logo/437155/logo) ## **[Visit website](https://stake.fish/)** We are truly at the forefront of the crypto ecosystem as maintainers of the infrastructure layer of blockchain networks! We practice the crypto team mentality by assembling a truly global and diverse team (with even pseudo-anonymous team members). We collectively represent more than 12 different countries and are united in a single mission: building out the future of decentralization. Crypto is here to stay, having introduced novel ideas such as DeFi, NFTs, and DAOs. At the core of all this are teams like us working relentlessly to build the necessary tools and applications that help run and secure blockchains.",
+        "location": "Remote — Dubai, Dubai, United Arab Emirates",
+        "url": "https://jobs.workable.com/view/3sP9yMvXR7oaiW1hW39bmj/remote-web3-%2F-full-stack-software-engineer-in-dubai-at-stakefish",
+        "skills": [
+          "Full-stack software development",
+          "Web3",
+          "web3.js",
+          "ethers.js",
+          "React.js",
+          "TypeScript",
+          "Python",
+          "Automated testing",
+          "CI/CD",
+          "Container orchestration",
+          "Blockchain",
+          "Smart contracts",
+          "Ethereum",
+          "EVM concepts",
+          "Data structures",
+          "Algorithms",
+          "Linux",
+          "Cloud services",
+          "AWS",
+          "Docker",
+          "Unix command line",
+          "Shell scripting",
+          "Smart contract security auditing",
+          "DeFi",
+          "NFTs",
+          "DAOs",
+          "Bitcoin"
+        ],
+        "distance": 0.29862686412013695
+      },
+      {
+        "id": "5",
+        "title": "Frontend Engineer 3",
+        "company": "Weekday AI",
+        "description": "![Weekday AI logo](https://workablehr.s3.amazonaws.com/uploads/account/logo/691818/logo) # **Frontend Engineer 3** ## at [Weekday AI](https://jobs.workable.com/company/pxG9rDgnvZm2c86JUchT1j/jobs-at-weekday-ai) **Remote**IndiaWeekday's Client via platformFull-time Posted 10 months ago Share job Apply now ### **Description** **This role is for one of the Weekday's clients** JobType: full-time As part of the front-end engineering team, you will be responsible for developing and maintaining modern web interfaces using React. You will focus on writing clean, maintainable code while ensuring applications are responsive, accessible, and optimized for performance across devices and browsers. This is a full-time role, suitable for professionals with 3+ years of hands-on React experience who are ready to take ownership and contribute to high-impact projects. ### **Requirements** ### **Key Responsibilities** - Design, develop, and maintain user-facing features using React.js. - Build reusable components and front-end libraries to support long-term scalability. - Translate UI/UX designs and wireframes into high-quality, production-ready code. - Optimize applications for speed, performance, and cross-browser compatibility. - Integrate RESTful APIs and third-party services seamlessly into the front end. - Ensure code quality through best practices, code reviews, and proper documentation. - Write unit and integration tests to maintain reliability and reduce regressions. - Collaborate closely with cross-functional teams to deliver features aligned with product goals. - Actively contribute to continuous improvement in front-end architecture, tooling, and workflows. ### **What Makes You a Great Fit** - You have **3+ years of professional experience** building applications with React.js. - You possess strong fundamentals in **JavaScript**, along with solid knowledge of **HTML5 and CSS3**. - You are experienced with common React patterns and state management solutions such as Redux or Context API. - You are comfortable working with modern build tools and front-end pipelines. - You understand responsive design principles and care about delivering consistent experiences across devices. - You have hands-on experience integrating APIs and handling asynchronous data flows. - You value clean code, testing, and maintainability, and enjoy participating in code reviews. - You are a proactive problem-solver with good communication skills and a collaborative mindset. - Bonus points if you have exposure to **TypeScript, Next.js, testing frameworks, GraphQL, or CI/CD workflows**. [More about Weekday AI](https://jobs.workable.com/company/pxG9rDgnvZm2c86JUchT1j/jobs-at-weekday-ai) Apply now ![Weekday AI logo](https://workablehr.s3.amazonaws.com/uploads/account/logo/691818/logo) ## **[Visit website](https://www.weekday.works/)** At Weekday (backed by YC; also Product Hunt #1 product of the day), we are building the next frontier in hiring. We have built the largest database of white collar talent in India and have built outreach tools on top of it to generate highest response rates.",
+        "location": "Remote, India",
+        "url": "https://jobs.workable.com/view/jwv9PcWujKbbujytqJtBab/remote-frontend-engineer-3-in-india-at-weekday-ai",
+        "skills": [
+          "React",
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "Redux",
+          "Context API",
+          "RESTful APIs",
+          "TypeScript",
+          "Next.js",
+          "GraphQL",
+          "CI/CD",
+          "Unit testing",
+          "Integration testing"
+        ],
+        "distance": 0.3040931458362117
+      },
+      {
+        "id": "12",
+        "title": "Full Stack Engineer",
+        "company": "Unwrap.ai",
+        "description": "- [![Unwrap](https://app.ashbyhq.com/api/images/org-theme-wordmark/dbc30e1b-ee0c-49fd-a980-ec7186720a82/03024789-b277-4166-9826-4cb07ef1b309/17d2b399-9429-4cd0-9ce3-f63f3b69fb15.png)](https://www.unwrap.ai/) - [Back to Unwrap’s Job Listings](https://jobs.ashbyhq.com/unwrap) # Full Stack Engineer ## Location Santa Barbara ## Employment Type Full time ## Location Type On-site ## Department Engineering ## Compensation - SDE$110K – $160K • Offers Equity Do you love to build? Are you one of the most ambitious people you know? If so, you'll be right at home at Unwrap. We are seeking a full stack software engineer who has a specific interest in working across the tech stack on both frontend, backend, and data pipelines. Our tech stack is built in TypeScript, our backend is a GraphQl / node based service, and our frontend runs on React. You’ll own and deliver major customer-facing components end-to-end. This includes understanding customer needs, helping compile sprint requirements, and ultimately shipping core product features. You’ll get exposure to all aspects of the company, from sales to marketing to customer success, but you’d focus primarily on designing and building user-facing tools. Our strong preference is for this person to be in-person, as most of the team is in beautiful Santa Barbara, CA. Our office is downtown, walking distance to great restaurants, coffee shops, and the beach. **Who We Are** [Unwrap.ai](http://unwrap.ai/) is on a mission to fill the world with products people love. We’re helping companies like Lyft, Stripe, Oura, Microsoft, Perplexity, and Github collect and process feedback more effectively. We ingest feedback from thousands of sources (support channels, surveys, social), and use state-of-the-art NLP technology to extract actionable insights for customers across software, hardware, and retail sectors. We’re currently a team of 40, based in Santa Barbara, and growing quickly. We are venture-backed, and just raised our $12M Series A from world-leading VCs. Our founders, two ex-Amazon Alexa Product Managers, were tired of manually sifting through customer reviews, support tickets, and bugs while working on Alexa. They understood the importance of listening to customers and prioritizing their requests effectively, but simply had too much feedback to parse through. So, [Unwrap.ai](http://unwrap.ai/) was born to solve this problem. Specifically, at Unwrap we use Natural Language Processing to automatically cluster, tag, and analyze customer feedback to help product and engineering teams build what customers want. The ultimate goal is to better connect users and builders, so builders can fill the world with products people love. Our small team is extremely motivated, hard-working, and simply gets stuff done. If this sounds exciting, we can't wait to read your application. **What You Bring** - Bachelors degree or equivalent in Computer Science or similar field - You have 2+ years experience as a software engineer - You are first and foremost a builder and are excited about the idea of spending 80%+ of your time actively developing software. - You have hands-on experience working on frontend and backend software systems. - You pride yourself on developing high quality products that solve real customer problems. - You own what you build and take pride in shipping robust high quality software. - You're not afraid of ambiguous product requirements. - You're comfortable meeting with customers. **What You Get** - Ground floor impact at a Series A startup with tremendous latitude over technical strategy and approach - Significant, potentially life-changing equity - Ability to rapidly advance your career alongside company growth - Collaborate with experienced teammates, entrepreneurs, and advisors - Work directly with enterprise customers to ideate and develop solutions Compensation Range: $110K - $160K [Apply for this Job](https://jobs.ashbyhq.com/unwrap/f5f0ecb5-c661-4e53-9700-da4f99cdde32/application)",
+        "location": "Santa Barbara, CA (On-site)",
+        "url": "https://jobs.ashbyhq.com/unwrap/f5f0ecb5-c661-4e53-9700-da4f99cdde32",
+        "skills": [
+          "TypeScript",
+          "GraphQL",
+          "Node.js",
+          "React",
+          "Frontend Development",
+          "Backend Development",
+          "Data Pipelines",
+          "Natural Language Processing (NLP)"
+        ],
+        "distance": 0.3085092924377878
+      }
+    ]
+  }
+}

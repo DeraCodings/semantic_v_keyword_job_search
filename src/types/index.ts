@@ -1,5 +1,5 @@
 /**
- * Raw search engine target found via SerpApi
+ * Search engine result returned from SerpApi Google search query
  */
 export interface SearchResult {
   title: string;
@@ -12,7 +12,7 @@ export interface SearchResult {
 }
 
 /**
- * Clean page content extracted via Firecrawl
+ * Raw page markdown content scraped via Firecrawl API
  */
 export interface ScrapedPage {
   url: string;
@@ -23,40 +23,32 @@ export interface ScrapedPage {
   scrapedAt: string;
 }
 
-export type LeadType =
-  | "JOB_POSTING"
-  | "WRITERS_PROGRAM"
-  | "DEVREL_HIRING"
-  | "FOUNDER_POST"
-  | "GENERAL_DEVTOOL";
-
 /**
- * Structured LLM evaluation output from OpenRouter
+ * Structured job posting representation ready for PostgreSQL ingestion
  */
-export interface LeadAnalysis {
-  companyName: string;
-  companyWebsite?: string;
-  jobPostingUrl?: string;
-  leadType?: LeadType;
-  isDevTool: boolean;
-  intentScore: number; // 0 to 100
-  hiringSignal: boolean;
-  activeRoles: string[];
-  fundingSignal: boolean;
-  fundingStage?: string;
-  contentPainPoints: string[];
-  summaryReasoning: string;
-  outreachAngle?: string;
+export interface JobPosting {
+  id?: number;
+  title: string;
+  company: string;
+  description: string;
+  location?: string;
+  url: string;
+  skills: string[];
+  createdAt?: string;
+  embedding?: number[] | null;
 }
 
 /**
- * Final consolidated lead record ready for CSV/JSON export and notification
+ * Result format for keyword and vector search queries
  */
-export interface Lead extends LeadAnalysis {
-  id: string;
-  sourceUrl: string;
-  domain: string;
-  companySlug: string;
-  discoveredAt: string;
+export interface SearchResultItem {
+  id: number;
+  title: string;
+  company: string;
+  description: string;
+  location?: string;
+  url: string;
+  skills: string[];
+  rank?: number;
+  distance?: number;
 }
-

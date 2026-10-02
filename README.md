@@ -1,157 +1,207 @@
-Markdown
-# DevTool Lead Scraper 🚀
+# Semantic Job Search
 
-An automated, intelligent lead discovery pipeline designed to surface high-intent developer tool companies actively hiring technical writers, Developer Advocates, and DevRel engineers. 
+A TypeScript job-ingestion and search API that compares PostgreSQL full-text search (`tsvector`) with semantic search using pgvector embeddings. It discovers job postings, extracts structured details, stores them in PostgreSQL, and exposes keyword, vector, and benchmark endpoints.
 
-Built with **TypeScript**, **Node.js**, **SerpApi**, **Firecrawl**, **OpenRouter (LLMs)**, and **Telegram**, this tool cuts through search engine clutter by scraping target career pages, evaluating company intent using AI, deduplicating against historical exports, and delivering qualified outreach opportunities straight to a Telegram channel.
+## What You Need
 
----
+- Node.js 20 or newer and npm
+- Docker Desktop, or a reachable PostgreSQL 18 database with pgvector
+- API keys for SerpApi, Firecrawl, OpenRouter, and Jina
 
-## 💡 Why This Exists
+The default embedding model is `jina-embeddings-v5-omni-small`. Get a Jina API key at [jina.ai/embeddings](https://jina.ai/embeddings/).
 
-Manual lead generation for technical writing and DevRel freelancing is tedious. Generic job board alerts dump hundreds of irrelevant roles into your inbox, while pure web scrapers fail to distinguish between generic SaaS startups and genuine developer-focused tools.
+## Quick Start
 
-This project automates the entire funnel:
-1. **Targeting:** Runs targeted Google Dorks across ATS platforms (Greenhouse, Lever, Ashby) and DevTool niches (AI, Auth, BaaS, Headless CMS).
-2. **Scraping:** Fetches raw page contents cleanly using Firecrawl API.
-3. **AI Qualification:** Uses LLM reasoning via OpenRouter to score company fit, Developer Experience focus, and outreach potential (0–100 score).
-4. **Deduplication:** Maintains historical CSV tracking to prevent duplicate outreach.
-5. **Alerting:** Pushes only high-scoring leads directly to a Telegram channel for immediate action.
+### 1. Clone and install
 
----
-
-## 🛠️ Tech Stack
-
-* **Runtime:** Node.js (v20+), TypeScript (`tsx` runner)
-* **Search Engine API:** [SerpApi](https://serpapi.com/) (Google Search API)
-* **Web Scraping:** [Firecrawl API](https://www.firecrawl.dev/) (Markdown extraction)
-* **LLM Intelligence:** [OpenRouter](https://openrouter.ai/) (Structured output evaluation)
-* **Notification System:** Telegram Bot API (`node-telegram-bot-api` / HTTP fetch)
-* **Automation:** GitHub Actions (24/7 Cloud Scheduled Runs) & Windows Task Scheduler
-
----
-
-## 📁 Repository Structure
-
-```text
-devtool-lead-scraper/
-├── .github/
-│   └── workflows/
-│       └── scraper.yml         # GitHub Actions 24/7 cron workflow
-├── src/
-│   ├── config/                 # Search presets & scoring rules
-│   ├── services/               # SerpApi, Firecrawl, OpenRouter & Telegram services
-│   ├── utils/                  # CSV parser & deduplication helpers
-│   └── index.ts                # Main CLI entry point
-├── exported_domains.csv        # Historical deduplication storage
-├── run-scraper.ps1             # Local Windows PowerShell runner script
-├── package.json
-├── tsconfig.json
-└── .env.example
+```bash
+git clone https://github.com/DeraCodings/semantic_v_keyword_job_search.git
+cd semantic_v_keyword_job_search
+npm install
 ```
 
-🚀 Quick Start & Local Setup
-1. Prerequisites
-Make sure you have Node.js (v20 or higher) installed on your machine.
-2. Clone & Install Dependencies
+### 2. Configure environment variables
 
+Create `.env` from the example:
 
+```bash
+cp .env.example .env
+```
 
-Bash
-git clone [https://github.com/your-username/devtool-lead-scraper.git](https://github.com/your-username/devtool-lead-scraper.git)
-cd devtool-lead-scraper
-npm install
+On Windows PowerShell:
 
+```powershell
+Copy-Item .env.example .env
+```
 
-3. Environment Configuration
-Create a .env file in the root directory and populate your API credentials:
+Set `SERPAPI_API_KEY`, `FIRECRAWL_API_KEY`, `OPENROUTER_API_KEY`, and `JINA_API_KEY` in `.env`. Keep this file private; it is excluded by `.gitignore`. Set the database URL to the local Compose database:
 
+```dotenv
+DATABASE_URL=postgresql://admin:mysecretpassword@localhost:5431/job_search
+```
 
+The credentials above match the local defaults in `docker/docker-composer.env`. Change both files together if you change those defaults.
 
-Code snippet
-# Search Engine API
-SERPAPI_KEY="your_serpapi_key"
+### 3. Start PostgreSQL and create the schema
 
-# Web Scraping API
-FIRECRAWL_KEY="your_firecrawl_api_key"
+From the repository root, start the Percona PostgreSQL container:
 
-# AI Inference (OpenRouter)
-OPENROUTER_KEY="your_openrouter_api_key"
+```bash
+docker compose --env-file docker/docker-composer.env -f docker/docker-compose.yml up -d
+```
 
-# Telegram Notifications
-TELEGRAM_BOT_TOKEN="123456789:ABCdefGHIjklMNOpqrsTUVwxyZ"
-TELEGRAM_CHAT_ID="your_telegram_chat_id"
+Connect to the database:
 
+```bash
+docker exec -it job_search psql -U admin -d job_search
+```
 
-💻 Usage & CLI Presets
-Run the CLI using npx tsx src/index.ts alongside your preferred search preset strategy and target limit.
-Basic Command Structure
+Run this SQL once in `psql` to enable pgvector and create the table used by the application:
 
+```sql
+CREATE EXTENSION IF NOT EXISTS vector;
 
+CREATE TABLE IF NOT EXISTS jobs (
+  id BIGSERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  company TEXT NOT NULL,
+  description TEXT NOT NULL,
+  location TEXT,
+  url TEXT NOT NULL UNIQUE,
+  skills TEXT[],
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  embedding vector(1024)
+);
 
-Bash
-npx tsx src/index.ts --preset <PRESET_NAME> --limit <NUMBER_OF_LEADS>
+CREATE OR REPLACE FUNCTION immutable_array_to_string(arr text[], sep text)
+RETURNS text
+LANGUAGE sql
+IMMUTABLE
+AS $$ SELECT array_to_string(arr, sep); $$;
 
+ALTER TABLE jobs
+ADD COLUMN IF NOT EXISTS search_vector tsvector
+GENERATED ALWAYS AS (
+  to_tsvector(
+    'english',
+    coalesce(title, '') || ' ' ||
+    coalesce(description, '') || ' ' ||
+    coalesce(immutable_array_to_string(skills, ' '), '')
+  )
+) STORED;
 
-Available Search Presets
-Preset
-Focus Area
-ATS_HIRING
-Scrapes Greenhouse, Lever, and Ashby boards for Technical Writers & DevRel roles.
-AI_DEVTOOLS
-Targets AI infrastructure, LLM APIs, Vector Databases, and RAG tooling.
-AUTH_COMPETITORS
-Targets Auth0/Clerk/Okta alternatives and Identity Management platforms.
-BAAS_COMPETITORS
-Targets Backend-as-a-Service, Firebase/Supabase/Appwrite alternatives.
-CMS_COMPETITORS
-Targets Headless CMS platforms and Content Infrastructure.
+CREATE INDEX IF NOT EXISTS jobs_search_vector_idx
+ON jobs USING GIN (search_vector);
+```
 
-Execution Examples
+**Embedding dimensions must match.** The database column is `vector(1024)` for the configured Jina model. The stored job embeddings and query embeddings must use the same model and output dimension. If you change embedding models, check that model's output dimension and update the database schema before ingesting or searching; do not mix vectors of different dimensions.
 
+### 4. Start the API
 
+```bash
+npm run dev
+```
 
-Bash
-# Run ATS hiring search with a limit of 15 leads
-npx tsx src/index.ts --preset ATS_HIRING --limit 15
+The API listens at `http://localhost:3000` by default. Check that it can reach the database:
 
-# Search AI DevTools space
-npx tsx src/index.ts --preset AI_DEVTOOLS --limit 10
+```text
+http://localhost:3000/api/health
+```
 
+### 5. Ingest jobs and search
 
-☁️ 24/7 Cloud Automation (GitHub Actions)
-This repository includes a pre-configured GitHub Actions workflow (.github/workflows/scraper.yml) that executes automatically every midnight at 00:00 UTC.
-Setting Up GitHub Actions
-Push this repository to GitHub (ensure your .env file is in .gitignore).
-Go to your repository Settings > Secrets and variables > Actions.
-Add the following repository secrets matching your .env setup:
-SERPAPI_KEY
-FIRECRAWL_KEY
-OPENROUTER_KEY
-TELEGRAM_BOT_TOKEN
-TELEGRAM_CHAT_ID
-How It Works in the Cloud
-The workflow initializes a clean Node.js container on GitHub's servers.
-Runs configured presets (ATS_HIRING, AI_DEVTOOLS, etc.).
-Evaluates leads and pushes high-intent matches to your Telegram.
-Automatically commits and pushes updated exported_domains.csv files back to the repository using stefanzweifel/git-auto-commit-action so deduplication remains consistent across runs.
-🖥️ Optional: Local Windows Scheduling
-If you prefer to run the scraper locally on a Windows machine via Task Scheduler, use the included PowerShell script:
-Update run-scraper.ps1 with your absolute project directory path.
-Register the task in PowerShell (Admin):
+Ingest up to 10 results from the `DATA_ENGINEER` preset. Send this JSON body to `POST http://localhost:3000/api/jobs/ingest`:
 
+```json
+{
+  "preset": "data_engineer",
+  "limit": 10
+}
+```
 
+For example, with curl:
 
-PowerShell
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -WindowStyle Hidden -File ""C:\Path\To\devtool-lead-scraper\run-scraper.ps1""" -WorkingDirectory "C:\Path\To\devtool-lead-scraper"; $trigger = New-ScheduledTaskTrigger -Daily -At 12:00AM; Register-ScheduledTask -TaskName "DevTool Lead Scraper Midnight Run" -Action $action -Trigger$trigger
+```bash
+curl -X POST http://localhost:3000/api/jobs/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"preset":"data_engineer","limit":10}'
+```
 
+A successful response looks like this; counts vary by search results and existing database contents:
 
-📄 Output Data & Deduplication
-Historical Tracking: Domains discovered during each run are logged against exported_domains.csv. Subsequent runs skip previously scanned companies automatically.
-Telegram Alerts: High-intent opportunities trigger a real-time card containing the company name, role link, intent score (0-100), and key reasoning highlights.
-🤝 Contributing & Extending
-Feel free to fork this repo and adapt it to your domain or outreach workflow!
-To add new search strategies, extend the preset definitions in src/config/.
-To adjust qualification parameters, update the system prompt fed into the OpenRouter evaluation module in src/services/.
-📜 License
-MIT License. Feel free to modify and build upon it!
+```json
+{
+  "success": true,
+  "scrapedPagesCount": 10,
+  "insertedCount": 5,
+  "totalStoredJobs": 24
+}
+```
+
+Search the ingested records with either engine:
+
+```text
+GET http://localhost:3000/api/search/vector?q=data%20engineer
+GET http://localhost:3000/api/search/keyword?q=PostgreSQL
+```
+
+The vector endpoint calls Jina to embed the query, so it requires a valid Jina key. A search against an empty database returns no matching jobs; ingest records first.
+
+## API Reference
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/health` | API status and stored job count |
+| `POST` | `/api/jobs/ingest` | Discover, scrape, extract, embed, and store jobs |
+| `GET` | `/api/search/keyword?q=<query>` | PostgreSQL full-text search |
+| `GET` | `/api/search/vector?q=<query>` | Semantic search with pgvector |
+| `GET` | `/api/benchmark?q=<query>` | Compare keyword and vector results |
+| `GET` | `/api/debug/distances` | Diagnostic distances for built-in sample queries |
+
+The ingest endpoint accepts one of `preset`, `query`, or `urls`, with an optional `limit`:
+
+```json
+{
+  "preset": "data_engineer",
+  "limit": 10
+}
+```
+
+```json
+{
+  "query": "site:jobs.lever.co PostgreSQL engineer",
+  "limit": 5
+}
+```
+
+```json
+{
+  "urls": ["https://jobs.ashbyhq.com/company/job-id"]
+}
+```
+
+Available presets: `POSTGRESQL_JOBS`, `DATABASE_ENGINEER`, `DATA_ENGINEER`, `BACKEND_DEVELOPER`, `INFRASTRUCTURE_ENGINEER`, `FRONTEND_DEVELOPER`, and `FULLSTACK_DEVELOPER`.
+
+## Using an Existing PostgreSQL Database
+
+Provide its connection string as `DATABASE_URL` in `.env`. The database must support pgvector, have the `vector` extension enabled, and contain the `jobs` table and `search_vector` generated column shown above. Ensure the database role has permission to create/use the extension and schema objects, or ask the database administrator to provision them.
+
+## Project Map
+
+- `src/index.ts`: Express API server and HTTP routes
+- `src/index2.ts`: CLI for ingestion, keyword search, vector search, and benchmarking
+- `src/services/`: search discovery, scraping, extraction, and embeddings
+- `src/db/`: PostgreSQL connection and job queries
+- `src/config/`: environment validation and search presets
+- `docker/`: local PostgreSQL Compose configuration and environment values
+- `test_samples/`: saved benchmark and distance-diagnosis response examples; these are reference snapshots, not database seed data
+
+The CLI can be run with `npm run cli -- --help`. Other package scripts are `npm run build` to compile TypeScript and `npm start` to run the compiled API from `dist/`.
+
+## Troubleshooting
+
+- **`relation "jobs" does not exist` or missing `search_vector`:** run the schema SQL against the database named in `DATABASE_URL`.
+- **`type "vector" does not exist`:** connect to the intended database and run `CREATE EXTENSION vector;`.
+- **Vector dimension mismatch:** the `embedding` column dimension must equal the output dimension of the configured embedding model. Use the same model for stored and query embeddings.
+- **API key errors or empty ingest:** verify the keys in `.env`; target discovery uses SerpApi, extraction uses OpenRouter, and embeddings use Jina. Firecrawl is used for scraping, with an HTTP fallback in the application.
+- **Port conflict:** set `PORT` in `.env` to an available port.
