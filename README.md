@@ -37,8 +37,9 @@ Copy-Item .env.example .env
 Set `SERPAPI_API_KEY`, `FIRECRAWL_API_KEY`, `OPENROUTER_API_KEY`, and `JINA_API_KEY` in `.env`. Keep this file private; it is excluded by `.gitignore`. Set the database URL to the local Compose database:
 
 ```dotenv
-DATABASE_URL=postgresql://admin:mysecretpassword@localhost:5431/job_search
+DATABASE_URL=postgresql://{user}:{your-password}@localhost:{PORT}/{container-name}
 ```
+*`PORT` is your local machine or deployed PORT mapping to Postgres default `5432` PORT*
 
 The credentials above match the local defaults in `docker/docker-composer.env`. Change both files together if you change those defaults.
 

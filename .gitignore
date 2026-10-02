@@ -4,3 +4,4 @@ dist/
 output/*
 !output/.gitkeep
 cron-log.txt
+terminal_outputs/
